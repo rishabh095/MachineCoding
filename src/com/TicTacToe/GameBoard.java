@@ -5,18 +5,26 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class GameBoard {
-    char[][] board;
+    char[][] gameBoard;
     int boardSize;
     Queue<Player> nextTurn;
     Scanner input;
+    String winString = "";
+    String playerOneWinString = "XXX";
+    String playerTwoWinString = "OOO";
 
     public GameBoard(int boardSize, Player[] players) {
         this.boardSize = boardSize;
-        this.board = new char[(2 * boardSize) - 1][(2 * boardSize) - 1];
-        initializeBoard(board);
+        this.gameBoard = new char[(2 * boardSize) - 1][(2 * boardSize) - 1];
+        initializeBoard(gameBoard);
         nextTurn = new LinkedList<>();
-        nextTurn.offer(players[0]);
-        nextTurn.offer(players[1]);
+        if (players[0].getPlayerSymbol() == 'X') {
+            nextTurn.offer(players[0]);
+            nextTurn.offer(players[1]);
+        } else {
+            nextTurn.offer(players[1]);
+            nextTurn.offer(players[0]);
+        }
         input = new Scanner(System.in);
     }
 
@@ -39,7 +47,7 @@ public class GameBoard {
     }
 
     private void printBoard() {
-        for (char[] row : board) {
+        for (char[] row : gameBoard) {
             for (char col : row) {
                 System.out.print(col);
             }
@@ -52,15 +60,14 @@ public class GameBoard {
         while (true) {
             count++;
             if (count == ((boardSize * boardSize) + 1)) {
-                System.out.println("Match draw");
+                System.out.println("Match draw.");
                 break;
             }
             Player player = nextTurn.poll();
             int position = getUserInput(player);
             int row = getRow(position);
             int col = getColumn(position);
-            board[row][col] = player.getPlayerSymbol();
-            //printBoard();
+            gameBoard[row][col] = player.getPlayerSymbol();
             System.out.println("Board after the move");
             printBoard();
             if (count >= boardSize && checkEndGame(player, row, col))
@@ -70,7 +77,6 @@ public class GameBoard {
     }
 
     private int getUserInput(Player player) {
-        //printBoard();
         System.out.println(player.getPlayerName() + " Please Enter a number between 1 - " + (boardSize * boardSize));
         int val = input.nextInt();
         while (!validateInput(val)) {
@@ -81,14 +87,12 @@ public class GameBoard {
         return val;
     }
 
-    private boolean validateInput(int val) {
-        if (val < 1 || val > (boardSize * boardSize))
+    private boolean validateInput(int position) {
+        if (position < 1 || position > (boardSize * boardSize))
             return false;
-        int row = getRow(val);
-        int col = getColumn(val);
-        if ((int) board[row][col] != 0)
-            return false;
-        return true;
+        int row = getRow(position);
+        int col = getColumn(position);
+        return (int) gameBoard[row][col] == 0;
     }
 
     private int getColumn(int position) {
@@ -100,26 +104,26 @@ public class GameBoard {
     }
 
     private boolean checkEndGame(Player player, int row, int col) {
-        String winString = "";
-        for (int i = 0; i < boardSize; i++) {
-            winString += String.valueOf(player.getPlayerSymbol());
-        }
-        String rowString = "";
-        String colString = "";
-        String diagonalString = "";
-        String reverseDiagonalString = "";
-        for (int i = 0; i < board.length; i = i + 2) {
-            rowString += board[row][i];
-            colString += board[i][col];
+        if (player.getPlayerSymbol() == 'X')
+            winString = playerOneWinString;
+        else
+            winString = playerTwoWinString;
+        StringBuilder rowString = new StringBuilder();
+        StringBuilder colString = new StringBuilder();
+        StringBuilder diagonalString = new StringBuilder();
+        StringBuilder reverseDiagonalString = new StringBuilder();
+        for (int i = 0; i < gameBoard.length; i = i + 2) {
+            rowString.append(gameBoard[row][i]);
+            colString.append(gameBoard[i][col]);
             if (row == col) {
-                diagonalString += board[i][i];
+                diagonalString.append(gameBoard[i][i]);
             }
-            if ((row + col) == board.length - 1) {
-                reverseDiagonalString += board[board.length - 1 - i][i];
+            if ((row + col) == gameBoard.length - 1) {
+                reverseDiagonalString.append(gameBoard[gameBoard.length - 1 - i][i]);
             }
         }
-        if (winString.equals(rowString) || winString.equals(colString) || winString.equals(diagonalString) || winString.equals(reverseDiagonalString)) {
-            System.out.println(player.getPlayerName() + " has won the Game");
+        if (winString.equals(rowString.toString()) || winString.equals(colString.toString()) || winString.equals(diagonalString.toString()) || winString.equals(reverseDiagonalString.toString())) {
+            System.out.println(player.getPlayerName() + " has won the Game.");
             return true;
         }
         return false;

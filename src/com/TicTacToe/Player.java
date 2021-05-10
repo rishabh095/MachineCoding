@@ -1,5 +1,7 @@
 package com.TicTacToe;
 
+import com.TicTacToe.exception.InvalidPlayerSymbolException;
+
 public class Player {
     private int playerId;
     private String playerName;
@@ -7,10 +9,13 @@ public class Player {
     private int ranking;
     private char playerSymbol;
 
-    public Player(int playerId, String playerName, char playerSymbol) {
-        this.playerName = playerName;
-        this.playerId = playerId;
-        this.playerSymbol = playerSymbol;
+    public Player(int playerId, String playerName, char playerSymbol) throws InvalidPlayerSymbolException {
+        if (playerSymbol == 'X' || playerSymbol == 'O') {
+            this.playerName = playerName;
+            this.playerId = playerId;
+            this.playerSymbol = playerSymbol;
+        } else
+            throw new InvalidPlayerSymbolException("Invalid Player Symbol selected");
     }
 
     public String getPlayerName() {
