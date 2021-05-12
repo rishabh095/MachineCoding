@@ -8,12 +8,13 @@ import java.util.Map;
 import static com.parkinglot.common.CommonConstant.BIKE_SLOTS_START_FROM;
 import static com.parkinglot.common.CommonConstant.TRUCK_SLOTS_START_FROM;
 
-public class TruckParking {
+public class TruckParking implements ParkingStrategy {
     static Map<Integer, Map<Integer, Vehicle>> slotsPerFloor = ParkingService.slotsPerFloor;
     static boolean flag;
     TicketService ticketService = new TicketService();
 
-    public String parkTruck(Vehicle vehicle) {
+    @Override
+    public String parkVehicle(Vehicle vehicle) {
         flag = false;
         for (int i = 1; i <= slotsPerFloor.size(); i++) {
             Map<Integer, Vehicle> slotsMap = slotsPerFloor.get(i);

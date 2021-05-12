@@ -5,14 +5,17 @@ import com.parkinglot.service.ticket.TicketService;
 
 import java.util.Map;
 
-import static com.parkinglot.common.CommonConstant.*;
+import static com.parkinglot.common.CommonConstant.BIKE_SLOTS_START_FROM;
+import static com.parkinglot.common.CommonConstant.CAR_SLOTS_START_FROM;
 
-public class BikeParking {
+public class BikeParking implements ParkingStrategy {
     static Map<Integer, Map<Integer, Vehicle>> slotsPerFloor = ParkingService.slotsPerFloor;
     static boolean flag;
     TicketService ticketService = new TicketService();
 
-    public String parkBike(Vehicle vehicle) {
+
+    @Override
+    public String parkVehicle(Vehicle vehicle) {
         flag = false;
         for (int i = 1; i <= slotsPerFloor.size(); i++) {
             Map<Integer, Vehicle> slotsMap = slotsPerFloor.get(i);

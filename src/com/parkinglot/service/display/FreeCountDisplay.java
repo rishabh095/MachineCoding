@@ -8,10 +8,10 @@ import java.util.Map;
 
 import static com.parkinglot.common.CommonConstant.*;
 
-public class FreeCountDisplay {
+public class FreeCountDisplay implements DisplayStrategy {
     Map<Integer, Map<Integer, Vehicle>> slotsPerFloor = ParkingService.slotsPerFloor;
 
-    public FreeCountDisplay(VehicleTypeEnum vehicleType) {
+    /*public FreeCountDisplay(VehicleTypeEnum vehicleType) {
         int freeCount;
         switch (vehicleType) {
             case CAR:
@@ -44,6 +44,48 @@ public class FreeCountDisplay {
                             freeCount++;
                     }
                     System.out.println("No. of free slots for Truck on Floor " + i + " : " + freeCount);
+                }
+                break;
+        }
+    }*/
+
+    @Override
+    public void display(VehicleTypeEnum vehicleType) {
+        int freeCount;
+        switch (vehicleType) {
+            case CAR:
+                freeCount = 0;
+                for (int i = 1; i <= slotsPerFloor.size(); i++) {
+                    for (Map.Entry<Integer, Vehicle> entry : slotsPerFloor.get(i).entrySet()) {
+                        if (entry.getKey() >= CAR_SLOTS_START_FROM && entry.getValue() == null)
+                            freeCount++;
+                    }
+                    System.out.println("No. of free slots for CAR on Floor " + i + " : " + freeCount);
+                    freeCount = 0;
+                }
+                break;
+            case BIKE:
+                freeCount = 0;
+                for (int i = 1; i <= slotsPerFloor.size(); i++) {
+                    for (Map.Entry<Integer, Vehicle> entry : slotsPerFloor.get(i).entrySet()) {
+                        if ((entry.getKey() >= BIKE_SLOTS_START_FROM && entry.getKey() < CAR_SLOTS_START_FROM)
+                                && entry.getValue() == null)
+                            freeCount++;
+                    }
+                    System.out.println("No. of free slots for BIKE on Floor " + i + " : " + freeCount);
+                    freeCount = 0;
+                }
+                break;
+            case TRUCK:
+                freeCount = 0;
+                for (int i = 1; i <= slotsPerFloor.size(); i++) {
+                    for (Map.Entry<Integer, Vehicle> entry : slotsPerFloor.get(i).entrySet()) {
+                        if ((entry.getKey() >= TRUCK_SLOTS_START_FROM && entry.getKey() < BIKE_SLOTS_START_FROM)
+                                && entry.getValue() == null)
+                            freeCount++;
+                    }
+                    System.out.println("No. of free slots for Truck on Floor " + i + " : " + freeCount);
+                    freeCount = 0;
                 }
                 break;
         }

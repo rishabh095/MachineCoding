@@ -6,6 +6,7 @@ import com.parkinglot.model.parking.Parking;
 import com.parkinglot.model.vehicle.Vehicle;
 import com.parkinglot.model.vehicle.VehicleTypeEnum;
 import com.parkinglot.service.display.DisplayStrategy;
+import com.parkinglot.service.display.DisplayStrategyContext;
 import com.parkinglot.service.ticket.TicketService;
 
 import java.util.HashMap;
@@ -15,7 +16,9 @@ public class ParkingService implements IParkingService {
     public static Map<String, Parking> parkingMap = new HashMap<>();
     public static Map<Integer, Map<Integer, Vehicle>> slotsPerFloor = new HashMap<>();
 
-    TicketService ticketService=new TicketService();
+    TicketService ticketService = new TicketService();
+    DisplayStrategyContext displayStrategyContext = new DisplayStrategyContext();
+    ParkingStrategyContext parkingStrategyContext = new ParkingStrategyContext();
 
     @Override
     public void createParking(String parkingId, int noOfFloors, int noOfSlotsPerFloor) throws InvalidParkingLotException {
@@ -37,7 +40,8 @@ public class ParkingService implements IParkingService {
 
     @Override
     public String parkVehicle(Vehicle vehicle) {
-        return ParkingStrategy.parkVehicle(vehicle);
+        ParkingStrategy parkingStrategy = parkingStrategyContext.getParkingStrategy(vehicle.getVehicleType());
+        return parkingStrategy.parkVehicle(vehicle);
     }
 
     @Override
@@ -47,6 +51,8 @@ public class ParkingService implements IParkingService {
 
     @Override
     public void display(DisplayTypeEnum displayType, VehicleTypeEnum vehicleType) {
-        DisplayStrategy.display(displayType, vehicleType);
+        DisplayStrategy displayStrategy = displayStrategyContext.getDisplayStrategy(displayType);
+        if (displayStrategy != null)
+            displayStrategy.display(vehicleType);
     }
 }

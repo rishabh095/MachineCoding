@@ -8,7 +8,7 @@ public class Parking {
     private int noOfSlotsPerFloor;
 
     public Parking(String id, int noOfFloors, int noOfSlotsPerFloor) throws InvalidParkingLotException {
-        if(noOfFloors<=0 || noOfSlotsPerFloor<=0)
+        if (noOfFloors <= 0 || noOfSlotsPerFloor <= 0)
             throw new InvalidParkingLotException("invalid no of floors or slots for parking.");
         this.id = id;
         this.noOfFloors = noOfFloors;

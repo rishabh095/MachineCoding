@@ -7,12 +7,12 @@ import com.parkinglot.service.parking.ParkingService;
 import java.util.Map;
 
 import static com.parkinglot.common.CommonConstant.*;
-import static com.parkinglot.common.CommonConstant.BIKE_SLOTS_START_FROM;
 
-public class FreeSlotDisplay {
+public class FreeSlotDisplay implements DisplayStrategy {
     Map<Integer, Map<Integer, Vehicle>> slotsPerFloor = ParkingService.slotsPerFloor;
 
-    public FreeSlotDisplay(VehicleTypeEnum vehicleType) {
+    @Override
+    public void display(VehicleTypeEnum vehicleType) {
         switch (vehicleType) {
             case CAR:
                 for (int i = 1; i <= slotsPerFloor.size(); i++) {

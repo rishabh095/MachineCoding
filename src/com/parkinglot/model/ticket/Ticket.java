@@ -4,10 +4,10 @@ import com.parkinglot.model.vehicle.Vehicle;
 
 public class Ticket {
     private String ticketId;
-    private Vehicle vehicel;
+    private Vehicle vehicle;
 
-    public Ticket(Vehicle vehicel) {
-        this.vehicel = vehicel;
+    public Ticket(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
     public String getTicketId() {
@@ -18,19 +18,19 @@ public class Ticket {
         this.ticketId = ticketId;
     }
 
-    public Vehicle getVehicel() {
-        return vehicel;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setVehicel(Vehicle vehicel) {
-        this.vehicel = vehicel;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
     @Override
     public String toString() {
         return "Ticket{" +
                 "ticketId='" + ticketId + '\'' +
-                ", vehicel=" + vehicel +
+                ", vehicle=" + vehicle +
                 '}';
     }
 }
