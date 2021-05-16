@@ -1,6 +1,7 @@
 package com.ridesharing.service.ride;
 
 import com.ridesharing.model.ride.OfferRide;
+import com.ridesharing.model.ride.RideStatusEnum;
 import com.ridesharing.model.ride.SelectRide;
 import com.ridesharing.model.user.User;
 import com.ridesharing.service.user.UserService;
@@ -16,10 +17,11 @@ public class PreferedVehicleRide implements SelectRideStrategy {
         String offeredRideId = "";
         for (Map.Entry<String, OfferRide> ride : rideMap.entrySet()) {
             OfferRide offeredRide = ride.getValue();
-            if (offeredRide.getOrigin().equalsIgnoreCase(selectRide.getOrigin()) &&
-                    offeredRide.getDestination().equalsIgnoreCase(selectRide.getDestination()) &&
-                    offeredRide.getAvailableSeats() >= selectRide.getSeats()) {
-                if (offeredRide.getVehicle().getVehicleName().equalsIgnoreCase(selectRide.getPreferedVehicleName())) {
+            if (offeredRide.getRideStatus().equals(RideStatusEnum.OFFERED) &&
+                    offeredRide.getVehicle().getVehicleName().equalsIgnoreCase(selectRide.getPreferedVehicleName()) &&
+                    offeredRide.getOrigin().equalsIgnoreCase(selectRide.getOrigin()) &&
+                    offeredRide.getDestination().equalsIgnoreCase(selectRide.getDestination())) {
+                if (offeredRide.getAvailableSeats() >= selectRide.getSeats()) {
                     offeredRideId = offeredRide.getId();
                     break;
                 }

@@ -48,7 +48,6 @@ public class Topic implements Runnable {
         Topic topic = (Topic) o;
         return Objects.equals(name, topic.getClass());
     }
-
     @Override
     public void run() {
         while (true) {

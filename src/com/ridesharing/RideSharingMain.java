@@ -52,7 +52,13 @@ public class RideSharingMain {
 
         rideService.printRideStats();
         System.out.println("-----------------------------");
+        System.out.println(VehicleService.vehicleMap);
         rideService.selectRide(new SelectRide("1",user3,"Shamli","Delhi",2, PreferredVehicleEnum.MOST_VACANT,""));
         rideService.printRideStats();
+        System.out.println(VehicleService.vehicleMap);
+        rideService.endRide(offerRide1);
+        System.out.println(VehicleService.vehicleMap);
+        rideService.selectRide(new SelectRide("1",user3,"Shamli","Delhi",2, PreferredVehicleEnum.MOST_VACANT,""));
+
     }
 }

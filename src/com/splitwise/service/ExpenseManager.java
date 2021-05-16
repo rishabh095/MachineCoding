@@ -20,11 +20,10 @@ public class ExpenseManager {
     public static Map<Integer, Map<Integer, Double>> balanceSheet;
 
     public ExpenseManager() {
-        this.expenses = new ArrayList<>();
-        this.userMap = new HashMap<>();
-        this.balanceSheet = new HashMap<>();
+        expenses = new ArrayList<>();
+        userMap = new HashMap<>();
+        balanceSheet = new HashMap<>();
     }
-
 
     public void addUser(User user) {
         userMap.put(user.getId(), user);
@@ -43,7 +42,7 @@ public class ExpenseManager {
                     balances.put(paidTo, 0.0);
                 balances.put(paidTo, balances.get(paidTo) + split.getAmount());
                 balances = balanceSheet.get(paidTo);
-                if (!balances.containsKey(paidBy))
+                if (!balances.containsKey(paidBy.getId()))
                     balances.put(paidBy.getId(), 0.0);
                 balances.put(paidBy.getId(), balances.get(paidBy.getId()) - split.getAmount());
             }
@@ -53,7 +52,7 @@ public class ExpenseManager {
     public void showBalance(int userId) {
         boolean isEmpty = true;
         for (Map.Entry<Integer, Double> userBalance : balanceSheet.get(userId).entrySet()) {
-            if (userBalance.getValue() > 0) {
+            if (userBalance.getValue() != 0) {
                 isEmpty = false;
                 printBalance(userId, userBalance.getKey(), userBalance.getValue());
             }
@@ -79,11 +78,11 @@ public class ExpenseManager {
     private void printBalance(int userOne, int userTwo, Double amount) {
         String userOneName = userMap.get(userOne).getName();
         String userTwoName = userMap.get(userTwo).getName();
-        //if (userOneName != userTwoName) {
-          /*  if (amount < 0)
+        if (userOneName != userTwoName) {
+            if (amount < 0)
                 System.out.println(userOneName + " owes " + userTwoName + " : " + Math.abs(amount));
-            else if (amount > 0)*/
+            else if (amount > 0)
         System.out.println(userTwoName + " owes " + userOneName + " : " + Math.abs(amount));
-        //}
+        }
     }
 }

@@ -53,6 +53,8 @@ public class Driver {
         splits.add(exactSplit2);
         expenseManager.addExpense(ExpenseType.EXACT, 1250, expenseManager.userMap.get(1), splits, null);
         expenseManager.showBalance(1);
+        System.out.println("user 2 balance");
+        expenseManager.showBalance(2);
         System.out.println();
         splits.clear();
         // Exact Expense end
